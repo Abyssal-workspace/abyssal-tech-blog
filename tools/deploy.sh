@@ -22,18 +22,18 @@ _backup_dir="$(mktemp -d)"
 
 _baseurl=""
 
- help() {
-   echo "Build, test and then deploy the site content to 'origin/<pages_branch>'"
-   echo
-   echo "Usage:"
-   echo
-   echo "   bash ./tools/deploy.sh [options]"
-   echo
-   echo "Options:"
-   echo '     -c, --config   "<config_a[,config_b[...]]>"    Specify config file(s)'
-   echo "     --dry-run                Build site and test, but not deploy"
-   echo "     -h, --help               Print this information."
- }
+help() {
+  echo "Build, test and then deploy the site content to 'origin/<pages_branch>'"
+  echo
+  echo "Usage:"
+  echo
+  echo "   bash ./tools/deploy.sh [options]"
+  echo
+  echo "Options:"
+  echo '     -c, --config   "<config_a[,config_b[...]]>"    Specify config file(s)'
+  echo "     --dry-run                Build site and test, but not deploy"
+  echo "     -h, --help               Print this information."
+}
 
 init() {
   if [[ -z ${GITHUB_ACTION+x} && $_opt_dry_run == 'false' ]]; then
@@ -46,29 +46,29 @@ init() {
 }
 
 build() {
-   # clean up
-   if [[ -d $SITE_DIR ]]; then
-     rm -rf "$SITE_DIR"
-   fi
+  # clean up
+  if [[ -d $SITE_DIR ]]; then
+    rm -rf "$SITE_DIR"
+  fi
 
-   # build
-   JEKYLL_ENV=production bundle exec jekyll b -d "$SITE_DIR$_baseurl" --config "$_config"
+  # build
+  JEKYLL_ENV=production bundle exec jekyll b -d "$SITE_DIR$_baseurl" --config "$_config"
 }
 
 test() {
-   bundle exec htmlproofer \
-     --disable-external \
-     --check-html \
-     --allow_hash_href \
-     "$SITE_DIR"
+  bundle exec htmlproofer \
+    --disable-external \
+    --check-html \
+    --allow_hash_href \
+    "$SITE_DIR"
 }
 
 resume_site_dir() {
-   if [[ -n $_baseurl ]]; then
-     # Move the site file to the regular directory '_site'
-     mv "$SITE_DIR$_baseurl" "${SITE_DIR}-rename"
-     rm -rf "$SITE_DIR"
-     mv "${SITE_DIR}-rename" "$SITE_DIR"
+  if [[ -n $_baseurl ]]; then
+    # Move the site file to the regular directory '_site'
+    mv "$SITE_DIR$_baseurl" "${SITE_DIR}-rename"
+    rm -rf "$SITE_DIR"
+    mv "${SITE_DIR}-rename" "$SITE_DIR"
   fi
 }
 
@@ -77,7 +77,7 @@ setup_gh() {
     _no_pages_branch=true
     git checkout -b "$PAGES_BRANCH"
   else
-    git checkout "$PAGES_BRANCH"
+    git checkout -f "$PAGES_BRANCH"
   fi
 }
 
